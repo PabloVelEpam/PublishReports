@@ -46,21 +46,20 @@ pipeline {
         }
     }
 
-    post {
+   post {
         always {
-            dir("${env.WORKSPACE}"){
+            dir("${env.WORKSPACE}") {
+                // Generar reporte XML de cobertura
                 sh 'venv/bin/coverage xml'
 
-                script {
-                def coverageReport = readFile('coverage.xml')
-                echo "Coverage Report: ${coverageReport}"
-                }
+                // Publicar cobertura visualmente en Jenkins
+                publishCoverage adapters: [jacocoAdapter('**/coverage.xml')],
+                    sourceFileResolver: sourceFiles('STORE_LAST_BUILD')
             }
 
+            // Publicar reportes de pruebas JUnit
             junit allowEmptyResults: true, testResults: '**/pytest_junit.xml'
-
             junit allowEmptyResults: true, testResults: '**/pylint_junit.xml'
-
         }
     }
 }
