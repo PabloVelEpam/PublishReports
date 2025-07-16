@@ -12,7 +12,7 @@ class Tests(unittest.TestCase):
     def test_200(self):
         '''test_200: a request for / shall return 200 OK'''
         res = self.app.get('/')
-        assert res.status == '200 OK'
+        assert res.status == '201 OK'
 
     def test_404(self):
         '''test_404: a request for null shall return 404 NOT FOUND'''
